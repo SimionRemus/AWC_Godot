@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmbm6w6xlv684"]
+
+[ext_resource type="Script" path="res://Scripts/UPNP.gd" id="1_4tffn"]
+
+[node name="UPNP" type="Node"]
+script = ExtResource("1_4tffn")
+PORT = 12121

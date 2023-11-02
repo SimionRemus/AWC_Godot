@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://whvxfuw2ij3u"
+path="res://.godot/imported/grass_quad_x3.obj-6d7258df35c32af04849d04e7224faa4.mesh"
+
+[deps]
+
+files=["res://.godot/imported/grass_quad_x3.obj-6d7258df35c32af04849d04e7224faa4.mesh"]
+
+source_file="res://addons/proton_scatter/zylann.hterrain/models/grass_quad_x3.obj"
+dest_files=["res://.godot/imported/grass_quad_x3.obj-6d7258df35c32af04849d04e7224faa4.mesh", "res://.godot/imported/grass_quad_x3.obj-6d7258df35c32af04849d04e7224faa4.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

@@ -1,0 +1,205 @@
+[gd_scene load_steps=13 format=3 uid="uid://dj0hanh4401x"]
+
+[ext_resource type="Script" path="res://Scripts/World.gd" id="1_ux20h"]
+[ext_resource type="Texture2D" uid="uid://dapwwki1pp3vb" path="res://_Assets/Sky_HDRI.exr" id="2_8avr2"]
+[ext_resource type="Texture2D" uid="uid://cicr6m8nn2qd4" path="res://_Assets/Textures/texture_07.png" id="3_625y5"]
+[ext_resource type="Texture2D" uid="uid://bvg8p3t6q815" path="res://_Assets/Textures/texture_05.png" id="4_h85ug"]
+[ext_resource type="Script" path="res://Scripts/FPS_Counter.gd" id="7_xel1g"]
+[ext_resource type="Script" path="res://Scripts/PlayMenu.gd" id="15_xjmhj"]
+[ext_resource type="Script" path="res://Scripts/MainMenu.gd" id="16_r1qkm"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gis2f"]
+panorama = ExtResource("2_8avr2")
+
+[sub_resource type="Sky" id="Sky_usfgh"]
+sky_material = SubResource("PanoramaSkyMaterial_gis2f")
+process_mode = 1
+radiance_size = 4
+
+[sub_resource type="Environment" id="Environment_xwy5c"]
+background_mode = 2
+sky = SubResource("Sky_usfgh")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+tonemap_mode = 2
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_cascades = 8
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.431373, 0.568627, 0.67451, 1)
+fog_density = 0.001
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.001
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3eg5"]
+albedo_texture = ExtResource("3_625y5")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tv0qm"]
+albedo_texture = ExtResource("4_h85ug")
+uv1_triplanar = true
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_ux20h")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.0145633, 0.490688, -0.871214, -0.0258456, 0.87083, 0.490904, 0.99956, 0.0296662, -3.35129e-08, -28.0659, 10.699, 3.14299)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
+spawn_path = NodePath("..")
+spawn_limit = 8
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_xwy5c")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_color = Color(1, 1, 0.788235, 1)
+light_energy = 1.2
+light_indirect_energy = 10.0
+light_volumetric_fog_energy = 10.0
+light_angular_distance = 1.0
+shadow_enabled = true
+shadow_reverse_cull_face = true
+
+[node name="Stage" type="Node3D" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(50, 1, 50)
+material = SubResource("StandardMaterial3D_r3eg5")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -21.3619)
+use_collision = true
+size = Vector3(50, 1, 20)
+material = SubResource("StandardMaterial3D_tv0qm")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("16_r1qkm")
+
+[node name="MainMenu" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -1.125
+anchor_right = 28.8
+anchor_bottom = 16.175
+offset_bottom = -6.10352e-05
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainMenu/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Archery Wars Clone"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Play_Button" type="Button" parent="UI/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Play"
+
+[node name="Options_Button" type="Button" parent="UI/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+
+[node name="Quit_Button" type="Button" parent="UI/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="PlayMenu" type="Control" parent="UI" node_paths=PackedStringArray("main_menu")]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("15_xjmhj")
+main_menu = NodePath("../MainMenu")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/PlayMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 28.875
+anchor_bottom = 16.35
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PlayMenu/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/PlayMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Play multiplayer"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HostGame" type="Button" parent="UI/PlayMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host Game"
+
+[node name="JoinGame" type="Button" parent="UI/PlayMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join Game"
+
+[node name="Return" type="Button" parent="UI/PlayMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Return"
+
+[node name="GameplayUI" type="Control" parent="UI"]
+visible = false
+layout_mode = 1
+anchor_right = 28.8
+anchor_bottom = 16.2
+metadata/_edit_use_anchors_ = true
+
+[node name="FPS_Counter" type="Label" parent="UI/GameplayUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.743
+anchor_right = 1.0
+anchor_bottom = 0.08
+offset_left = 0.0639648
+offset_bottom = 0.159996
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("7_xel1g")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="UI/MainMenu/MarginContainer/VBoxContainer/Play_Button" to="UI" method="_on_play_button_pressed"]
+[connection signal="pressed" from="UI/MainMenu/MarginContainer/VBoxContainer/Play_Button" to="UI/MainMenu" method="_on_play_button_pressed" flags=18]
+[connection signal="pressed" from="UI/MainMenu/MarginContainer/VBoxContainer/Options_Button" to="UI" method="_on_options_button_pressed"]
+[connection signal="pressed" from="UI/MainMenu/MarginContainer/VBoxContainer/Options_Button" to="UI/MainMenu" method="_on_options_button_pressed" flags=18]
+[connection signal="pressed" from="UI/MainMenu/MarginContainer/VBoxContainer/Quit_Button" to="UI" method="_on_quit_button_pressed"]
+[connection signal="pressed" from="UI/MainMenu/MarginContainer/VBoxContainer/Quit_Button" to="UI/MainMenu" method="_on_quit_button_pressed" flags=18]
+[connection signal="pressed" from="UI/PlayMenu/MarginContainer/VBoxContainer/HostGame" to="UI/PlayMenu" method="_on_host_game_pressed"]
+[connection signal="pressed" from="UI/PlayMenu/MarginContainer/VBoxContainer/JoinGame" to="UI/PlayMenu" method="_on_join_game_pressed"]
+[connection signal="pressed" from="UI/PlayMenu/MarginContainer/VBoxContainer/Return" to="UI/PlayMenu" method="_on_return_pressed"]
