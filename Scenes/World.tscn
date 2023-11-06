@@ -1,22 +1,69 @@
-[gd_scene load_steps=15 format=3 uid="uid://b5bw37phe46ik"]
+[gd_scene load_steps=25 format=3 uid="uid://b5bw37phe46ik"]
 
 [ext_resource type="Script" path="res://Scripts/World.gd" id="1_ux20h"]
 [ext_resource type="Environment" uid="uid://xwxsqngt4cnn" path="res://_Assets/World.tres" id="2_ap2k5"]
-[ext_resource type="Texture2D" uid="uid://cicr6m8nn2qd4" path="res://_Assets/Textures/texture_07.png" id="3_625y5"]
-[ext_resource type="Texture2D" uid="uid://bvg8p3t6q815" path="res://_Assets/Textures/texture_05.png" id="4_h85ug"]
+[ext_resource type="Texture2D" uid="uid://ds3br8yt148e8" path="res://_Assets/Textures/slot0_albedo_bump.png" id="3_5oejx"]
+[ext_resource type="Texture2D" uid="uid://dir5mtv7vbd2n" path="res://_Assets/Textures/slot0_normal_roughness.png" id="4_8rwi6"]
+[ext_resource type="Texture2D" uid="uid://dbe6ba8boab04" path="res://_Assets/Textures/slot3_albedo_bump.png" id="5_tlxms"]
+[ext_resource type="Texture2D" uid="uid://cjaj6vdhx8ob5" path="res://_Assets/Textures/Ground040.png" id="6_5je2q"]
+[ext_resource type="Texture2D" uid="uid://6baeodvy3p8m" path="res://_Assets/Textures/slot3_normal_roughness.png" id="7_8pwbb"]
 [ext_resource type="Script" path="res://Scripts/FPS_Counter.gd" id="7_xel1g"]
 [ext_resource type="Texture2D" uid="uid://dvqqflruxt06d" path="res://_Assets/Textures/kisspng-reticle.png" id="8_jwean"]
+[ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_blocks.gd" id="8_ovskq"]
 [ext_resource type="AudioStream" uid="uid://ofc62kl6b3s7" path="res://audio/music/Be Forest - Florence_NOT COMMERCIAL USE.mp3" id="9_gxi3i"]
+[ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_convex_block.gd" id="9_pdg62"]
+[ext_resource type="Script" path="res://addons/cyclops_level_builder/resources/convex_block_data.gd" id="10_0u87e"]
+[ext_resource type="Theme" uid="uid://bykobr3irqs7i" path="res://_Assets/UI/Theme_1.tres" id="10_nxyhw"]
+[ext_resource type="Texture2D" uid="uid://ds026xborfiv0" path="res://_Assets/UI/beautiful-shot-forest-with-tall-green-trees.jpg" id="13_1vofo"]
 [ext_resource type="Script" path="res://Scripts/PlayMenu.gd" id="15_xjmhj"]
 [ext_resource type="Script" path="res://Scripts/MainMenu.gd" id="16_r1qkm"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3eg5"]
-albedo_texture = ExtResource("3_625y5")
-uv1_triplanar = true
+albedo_texture = ExtResource("3_5oejx")
+normal_enabled = true
+normal_texture = ExtResource("4_8rwi6")
+uv2_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tv0qm"]
-albedo_texture = ExtResource("4_h85ug")
-uv1_triplanar = true
+albedo_texture = ExtResource("5_tlxms")
+normal_enabled = true
+normal_texture = ExtResource("7_8pwbb")
+uv2_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x2vwy"]
+shading_mode = 2
+diffuse_mode = 2
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("5_tlxms")
+metallic = 1.0
+metallic_specular = 0.0
+roughness_texture = ExtResource("7_8pwbb")
+ao_texture = ExtResource("6_5je2q")
+heightmap_enabled = true
+heightmap_texture = ExtResource("7_8pwbb")
+uv2_scale = Vector3(2.95, 2.95, 2.95)
+uv2_triplanar = true
+uv2_triplanar_sharpness = 0.732043
+
+[sub_resource type="Resource" id="Resource_tse7r"]
+script = ExtResource("10_0u87e")
+selected = false
+active = false
+collsion = true
+vertex_points = PackedVector3Array(-26, -1, -26, 26, -1, -26, 26, 0, -26, -26, 0, -26, 26, 0, 26, -26, 0, 26, 26, -1, 26, -26, -1, 26)
+vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
+active_vertex = -1
+edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 3, 2, 4, 6, 4, 1, 6, 7, 0, 5, 7, 6, 7)
+edge_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+active_edge = -1
+edge_face_indices = PackedInt32Array(0, 5, 0, 2, 0, 1, 0, 3, 1, 4, 1, 3, 1, 2, 2, 4, 2, 5, 3, 5, 3, 4, 4, 5)
+face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
+face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 4, 5, 3, 2, 6, 4, 2, 1, 7, 0, 3, 5, 7, 5, 4, 6, 7, 6, 1, 0)
+face_material_indices = PackedInt32Array(-1, -1, -1, -1, -1, -1)
+face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0)])
+face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
+active_face = -1
+face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
 
 [sub_resource type="Animation" id="Animation_m7grl"]
 resource_name = "MainScreenAnimation"
@@ -83,11 +130,12 @@ shadow_opacity = 0.85
 [node name="Stage" type="Node3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Stage"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.5, 0)
+visible = false
 use_collision = true
 collision_layer = 255
 collision_mask = 255
-size = Vector3(50, 1, 50)
+size = Vector3(50, 9.15448, 50)
 material = SubResource("StandardMaterial3D_r3eg5")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Stage"]
@@ -99,12 +147,27 @@ size = Vector3(50, 1, 20)
 material = SubResource("StandardMaterial3D_tv0qm")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="Stage"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.9733, 0.812203, -19.3619)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0919, 0.781789, -19.0569)
 use_collision = true
 collision_layer = 255
 collision_mask = 255
 size = Vector3(20, 1, 20)
 material = SubResource("StandardMaterial3D_tv0qm")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 20.7457)
+use_collision = true
+radius = 3.93173
+height = 5.30911
+sides = 16
+material = SubResource("StandardMaterial3D_x2vwy")
+
+[node name="CyclopsBlocks" type="Node3D" parent="Stage"]
+script = ExtResource("8_ovskq")
+
+[node name="Block_0" type="Node" parent="Stage/CyclopsBlocks"]
+script = ExtResource("9_pdg62")
+block_data = SubResource("Resource_tse7r")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -147,15 +210,30 @@ vertical_alignment = 1
 
 [node name="Play_Button" type="Button" parent="UI/CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("10_nxyhw")
 text = "Play"
 
 [node name="Options_Button" type="Button" parent="UI/CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("10_nxyhw")
 text = "Options"
 
 [node name="Quit_Button" type="Button" parent="UI/CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("10_nxyhw")
 text = "Quit"
+
+[node name="Background" type="TextureRect" parent="UI/CanvasLayer/MainMenu"]
+modulate = Color(1, 1, 1, 0.501961)
+show_behind_parent = true
+layout_mode = 0
+offset_right = 7360.0
+offset_bottom = 4912.0
+scale = Vector2(0.265, 0.265)
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+texture = ExtResource("13_1vofo")
 
 [node name="PlayMenu" type="Control" parent="UI/CanvasLayer" node_paths=PackedStringArray("main_menu")]
 visible = false
@@ -194,6 +272,7 @@ layout_mode = 2
 
 [node name="HostGame_btn" type="Button" parent="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme = ExtResource("10_nxyhw")
 text = "Host Game"
 
 [node name="External_IP" type="Label" parent="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -205,16 +284,31 @@ layout_mode = 2
 
 [node name="JoinGame_btn" type="Button" parent="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/Join"]
 layout_mode = 2
+theme = ExtResource("10_nxyhw")
 text = "Join Game"
 
 [node name="IP_to_join" type="LineEdit" parent="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/Join"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("10_nxyhw")
 placeholder_text = "IP"
 
 [node name="Return" type="Button" parent="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("10_nxyhw")
 text = "Return"
+
+[node name="Background2" type="TextureRect" parent="UI/CanvasLayer/PlayMenu"]
+modulate = Color(1, 1, 1, 0.501961)
+show_behind_parent = true
+layout_mode = 0
+offset_right = 7360.0
+offset_bottom = 4912.0
+scale = Vector2(0.265, 0.265)
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+texture = ExtResource("13_1vofo")
 
 [node name="GameplayUI" type="Control" parent="UI/CanvasLayer"]
 visible = false
@@ -242,7 +336,8 @@ horizontal_alignment = 2
 script = ExtResource("7_xel1g")
 metadata/_edit_use_anchors_ = true
 
-[node name="TextureRect" type="TextureRect" parent="UI/CanvasLayer/GameplayUI"]
+[node name="Reticle" type="TextureRect" parent="UI/CanvasLayer/GameplayUI"]
+visible = false
 custom_minimum_size = Vector2(16, 16)
 layout_direction = 1
 layout_mode = 1
@@ -279,6 +374,17 @@ volume_db = -25.0
 bus = &"Music"
 
 [node name="Arrow_Holder" type="Node" parent="."]
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="SP_1" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 13.5669)
+
+[node name="SP_2" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.9343, 0, 0)
+
+[node name="SP_3" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.9264, 0, 0)
 
 [connection signal="pressed" from="UI/CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Play_Button" to="UI" method="_on_play_button_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Play_Button" to="UI/CanvasLayer/MainMenu" method="_on_play_button_pressed" flags=18]

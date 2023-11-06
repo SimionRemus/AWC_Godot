@@ -1,7 +1,9 @@
 extends CharacterBody3D
 
-##| DEBUG |##
-@onready var label_3d = $Label3D
+##| DEBUG and scoring|##
+@onready var name_label = $Name
+@onready var score_label = $Score
+var score:int=0
 
 
 ##| Sound |##
@@ -25,6 +27,7 @@ var paused:bool=false
 signal pause
 signal unpause
 @onready var signalRouter=get_node("/root/SignalRouter")
+@onready var spawn_points=get_node("/root/World/SpawnPoints")
 
 
 @onready var ik_target_slot = $IK_Target_Slot
@@ -52,6 +55,8 @@ var reloading=false
 var shooting:bool=false
 var shooting_sound_started:bool=false
 @export var is_dead:bool
+@onready var arrows_hit = $ArrowsHit
+
 
 @export var aiming:bool=false
 var aiming_sound_started:bool=false
@@ -68,8 +73,12 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	mouse_mode_captured=true
 	is_dead=false
-	label_3d.text="Player "+name	
-	
+	name_label.text="Player "+name
+	score_label.text=str(score)
+
+func _process(delta):
+	score_label.text=str(score)
+
 func _input(event):
 	if not is_multiplayer_authority():
 		return
@@ -213,12 +222,21 @@ func shoot_arrow():
 
 func end_of_dance():
 	disable_movement=false;
+
+func spawn_rand_point():
+	var sp_array=spawn_points.get_children()
+	var spawnpoint=sp_array[randi() % sp_array.size()]
+	position=spawnpoint.position
+	rotation=spawnpoint.rotation
 	
 func respawn_timer():
 	await get_tree().create_timer(5.0).timeout
-	get_child(-1).queue_free()
+	is_dead=false
 	animation_tree.set("parameters/conditions/respawn",true)
 	disable_movement=false;
+	spawn_rand_point()
+	for a in arrows_hit.get_children():
+		a.queue_free()
 
 func _on_reload_timer():
 	await reload_timer.timeout

@@ -125,7 +125,7 @@ collision_mask = 255
 mass = 0.5
 physics_material_override = SubResource("PhysicsMaterial_bii2n")
 continuous_cd = true
-max_contacts_reported = 20
+max_contacts_reported = 10
 contact_monitor = true
 can_sleep = false
 script = ExtResource("1_34tct")
@@ -153,7 +153,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.382822, 0)
 shape = SubResource("CapsuleShape3D_qmhhm")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 100.0
 one_shot = true
 autostart = true
 
