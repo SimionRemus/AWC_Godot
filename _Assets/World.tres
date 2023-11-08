@@ -15,4 +15,6 @@ ambient_light_color = Color(1, 1, 0.764706, 1)
 tonemap_mode = 2
 tonemap_white = 5.0
 fog_density = 0.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
 adjustment_enabled = true

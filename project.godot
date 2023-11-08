@@ -18,8 +18,8 @@ config/icon="res://_Assets/icon.svg"
 
 [autoload]
 
-NetworkManager="*res://Scripts/NetworkManager.gd"
-SignalRouter="*res://Scripts/Signal_Router.gd"
+NetworkManager="*res://Scripts/Autoloads/NetworkManager.gd"
+SignalRouter="*res://Scripts/Autoloads/Signal_Router.gd"
 CyclopsAutoload="*res://addons/cyclops_level_builder/cyclops_global_scene.tscn"
 
 [display]
@@ -37,7 +37,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/cyclops_level_builder/plugin.cfg", "res://addons/proton_scatter/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg")
+enabled=PackedStringArray("res://addons/ScreenSwitcher/plugin.cfg", "res://addons/cyclops_level_builder/plugin.cfg", "res://addons/proton_scatter/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg")
 
 [input]
 

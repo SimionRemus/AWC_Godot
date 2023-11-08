@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b5bw37phe46ik"]
+[gd_scene load_steps=34 format=3 uid="uid://b5bw37phe46ik"]
 
 [ext_resource type="Script" path="res://Scripts/World.gd" id="1_ux20h"]
 [ext_resource type="Environment" uid="uid://xwxsqngt4cnn" path="res://_Assets/World.tres" id="2_ap2k5"]
@@ -15,8 +15,60 @@
 [ext_resource type="Script" path="res://addons/cyclops_level_builder/resources/convex_block_data.gd" id="10_0u87e"]
 [ext_resource type="Theme" uid="uid://bykobr3irqs7i" path="res://_Assets/UI/Theme_1.tres" id="10_nxyhw"]
 [ext_resource type="Texture2D" uid="uid://ds026xborfiv0" path="res://_Assets/UI/beautiful-shot-forest-with-tall-green-trees.jpg" id="13_1vofo"]
+[ext_resource type="Script" path="res://Scripts/OptionsMenu.gd" id="15_vxo4p"]
 [ext_resource type="Script" path="res://Scripts/PlayMenu.gd" id="15_xjmhj"]
+[ext_resource type="PackedScene" uid="uid://dfykhchivblic" path="res://Scenes/UI/sound_item.tscn" id="16_1f8sg"]
+[ext_resource type="PackedScene" uid="uid://d12uta6tgowkc" path="res://Scenes/UI/hotkey_rebind_item.tscn" id="16_6thak"]
 [ext_resource type="Script" path="res://Scripts/MainMenu.gd" id="16_r1qkm"]
+
+[sub_resource type="Shader" id="Shader_wci0u"]
+code = "shader_type fog;
+
+uniform sampler2D noise_tex:repeat_enable;
+uniform float noise_scale=1.0;
+uniform float flatness=1.0;
+uniform float density=1.0;
+
+uniform sampler2D grad_tex;
+
+void fog() {
+	vec2 move_uv=vec2(0.1,0.0)*TIME;
+	float detail_noise=texture(noise_tex,WORLD_POSITION.xz*noise_scale+move_uv*0.5).r*0.2;
+	float noise=texture(noise_tex,WORLD_POSITION.xz*noise_scale+move_uv+detail_noise).r;
+	DENSITY=mix(1.0,noise,UVW.y*flatness);
+	DENSITY*=step(0.0,-SDF)*density;
+	
+	vec3 col=texture(grad_tex,vec2(DENSITY,0.5)).rgb;
+	ALBEDO=vec3(1.0);
+	EMISSION=vec3(col);
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_a2q3h"]
+offsets = PackedFloat32Array(0, 0.533898, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.282465, 3.79438e-07, 1.99049e-07, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gt1ag"]
+gradient = SubResource("Gradient_a2q3h")
+width = 512
+use_hdr = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6oqb3"]
+noise_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1vqtu"]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_6oqb3")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_slr3f"]
+shader = SubResource("Shader_wci0u")
+shader_parameter/noise_scale = 0.05
+shader_parameter/flatness = 2.511
+shader_parameter/density = 2.4
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_1vqtu")
+shader_parameter/grad_tex = SubResource("GradientTexture1D_gt1ag")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3eg5"]
 albedo_texture = ExtResource("3_5oejx")
@@ -126,12 +178,17 @@ light_angular_distance = 1.0
 shadow_enabled = true
 shadow_reverse_cull_face = true
 shadow_opacity = 0.85
+directional_shadow_mode = 1
+
+[node name="FogVolume" type="FogVolume" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+size = Vector3(60, 4, 60)
+material = SubResource("ShaderMaterial_slr3f")
 
 [node name="Stage" type="Node3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.5, 0)
-visible = false
 use_collision = true
 collision_layer = 255
 collision_mask = 255
@@ -163,6 +220,7 @@ sides = 16
 material = SubResource("StandardMaterial3D_x2vwy")
 
 [node name="CyclopsBlocks" type="Node3D" parent="Stage"]
+visible = false
 script = ExtResource("8_ovskq")
 
 [node name="Block_0" type="Node" parent="Stage/CyclopsBlocks"]
@@ -180,6 +238,7 @@ script = ExtResource("16_r1qkm")
 follow_viewport_enabled = true
 
 [node name="MainMenu" type="Control" parent="UI/CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -310,6 +369,167 @@ size_flags_vertical = 6
 mouse_filter = 2
 texture = ExtResource("13_1vofo")
 
+[node name="Options" type="Control" parent="UI/CanvasLayer" node_paths=PackedStringArray("main_menu")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("15_vxo4p")
+main_menu = NodePath("../MainMenu")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/CanvasLayer/Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Tabs" type="HBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 300
+
+[node name="Input" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input"]
+layout_mode = 2
+text = "Input Settings"
+horizontal_alignment = 3
+vertical_alignment = 3
+
+[node name="Container" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input"]
+layout_mode = 2
+theme_override_constants/separation = 56
+
+[node name="Hotkey_rebind_item" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "Left"
+
+[node name="Hotkey_rebind_item2" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "Right"
+
+[node name="Hotkey_rebind_item3" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "Forward"
+
+[node name="Hotkey_rebind_item4" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "Backward"
+
+[node name="Hotkey_rebind_item5" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "Jump"
+
+[node name="Hotkey_rebind_item6" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "Crouch"
+
+[node name="Hotkey_rebind_item7" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "Sprint"
+
+[node name="Hotkey_rebind_item8" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "Dance"
+
+[node name="Hotkey_rebind_item9" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "Die"
+
+[node name="Hotkey_rebind_item10" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+action_name = "ToggleMouseCaptured"
+
+[node name="GFX" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX"]
+layout_mode = 2
+text = "Graphics Settings"
+
+[node name="GridContainer" type="GridContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX"]
+layout_mode = 2
+columns = 2
+
+[node name="Sound" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Sound"]
+layout_mode = 2
+text = "Sound Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="sound_item" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Sound" instance=ExtResource("16_1f8sg")]
+layout_mode = 2
+bus_name = "Master"
+
+[node name="sound_item2" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Sound" instance=ExtResource("16_1f8sg")]
+layout_mode = 2
+bus_name = "Music"
+
+[node name="sound_item3" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Sound" instance=ExtResource("16_1f8sg")]
+layout_mode = 2
+bus_name = "SFX"
+
+[node name="Access" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Access"]
+layout_mode = 2
+text = "Accesibility"
+
+[node name="GridContainer" type="GridContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Access"]
+layout_mode = 2
+columns = 2
+
+[node name="Return" type="Button" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("10_nxyhw")
+text = "Return"
+
+[node name="Background2" type="TextureRect" parent="UI/CanvasLayer/Options"]
+modulate = Color(1, 1, 1, 0.501961)
+show_behind_parent = true
+layout_mode = 0
+offset_right = 7360.0
+offset_bottom = 4912.0
+scale = Vector2(0.265, 0.265)
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+texture = ExtResource("13_1vofo")
+
 [node name="GameplayUI" type="Control" parent="UI/CanvasLayer"]
 visible = false
 layout_mode = 3
@@ -371,6 +591,7 @@ libraries = {
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9_gxi3i")
 volume_db = -25.0
+autoplay = true
 bus = &"Music"
 
 [node name="Arrow_Holder" type="Node" parent="."]
@@ -395,3 +616,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.9264, 0, 0)
 [connection signal="pressed" from="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/HBoxContainer/HostGame_btn" to="UI/CanvasLayer/PlayMenu" method="_on_host_game_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/Join/JoinGame_btn" to="UI/CanvasLayer/PlayMenu" method="_on_join_game_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/Return" to="UI/CanvasLayer/PlayMenu" method="_on_return_pressed"]
+[connection signal="pressed" from="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/Return" to="UI/CanvasLayer/Options" method="_on_return_pressed"]
