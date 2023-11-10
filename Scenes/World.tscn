@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://b5bw37phe46ik"]
+[gd_scene load_steps=36 format=3 uid="uid://b5bw37phe46ik"]
 
 [ext_resource type="Script" path="res://Scripts/World.gd" id="1_ux20h"]
 [ext_resource type="Environment" uid="uid://xwxsqngt4cnn" path="res://_Assets/World.tres" id="2_ap2k5"]
@@ -20,6 +20,8 @@
 [ext_resource type="PackedScene" uid="uid://dfykhchivblic" path="res://Scenes/UI/sound_item.tscn" id="16_1f8sg"]
 [ext_resource type="PackedScene" uid="uid://d12uta6tgowkc" path="res://Scenes/UI/hotkey_rebind_item.tscn" id="16_6thak"]
 [ext_resource type="Script" path="res://Scripts/MainMenu.gd" id="16_r1qkm"]
+[ext_resource type="PackedScene" uid="uid://d4hgxuihgipq2" path="res://Scenes/UI/resolution_control.tscn" id="17_t8v0q"]
+[ext_resource type="PackedScene" uid="uid://7uyi7dxsm1s" path="res://Scenes/UI/window_mode_control.tscn" id="18_ycldp"]
 
 [sub_resource type="Shader" id="Shader_wci0u"]
 code = "shader_type fog;
@@ -294,7 +296,7 @@ size_flags_vertical = 6
 mouse_filter = 2
 texture = ExtResource("13_1vofo")
 
-[node name="PlayMenu" type="Control" parent="UI/CanvasLayer" node_paths=PackedStringArray("main_menu")]
+[node name="PlayMenu" type="Control" parent="UI/CanvasLayer"]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -303,7 +305,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("15_xjmhj")
-main_menu = NodePath("../MainMenu")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/CanvasLayer/PlayMenu"]
 layout_mode = 1
@@ -469,15 +470,21 @@ action_name = "ToggleMouseCaptured"
 
 [node name="GFX" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs"]
 layout_mode = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX"]
 layout_mode = 2
 text = "Graphics Settings"
 
-[node name="GridContainer" type="GridContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX"]
 layout_mode = 2
-columns = 2
+theme_override_constants/separation = 56
+
+[node name="Resolution_Control" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer" instance=ExtResource("17_t8v0q")]
+layout_mode = 2
+
+[node name="window_mode_control" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer" instance=ExtResource("18_ycldp")]
+layout_mode = 2
 
 [node name="Sound" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs"]
 layout_mode = 2
