@@ -4,7 +4,8 @@ extends CharacterBody3D
 @onready var name_label = $Name
 @onready var score_label = $Score
 var score:int=0
-
+@onready var skill_tree = $Skill_tree
+var pause_mouse_movement:bool = false
 
 ##| Sound |##
 @onready var ap_nock = $AP_container/AP_nock
@@ -78,11 +79,19 @@ func _ready():
 
 func _process(delta):
 	score_label.text=str(score)
+	if Input.is_action_just_pressed("Skills"):
+		skill_tree.visible= not skill_tree.visible
+		if skill_tree.visible:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			pause_mouse_movement=true
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			pause_mouse_movement=false
 
 func _input(event):
 	if not is_multiplayer_authority():
 		return
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and !pause_mouse_movement:
 		if(!paused and (!disable_movement or aiming)):
 			rotate_y(deg_to_rad(-event.relative.x*mouse_sens))
 			head.rotate_x(deg_to_rad(-event.relative.y*mouse_sens))
@@ -174,7 +183,7 @@ func _physics_process(delta):
 		shooting_sound_started=false	
 
 	#Special states (death, dance)
-	if(aiming):
+	if(aiming and not pause_mouse_movement):
 		if (ap_nock.playing==false and aiming_sound_started==false):
 			ap_nock.play()
 			aiming_sound_started=true
@@ -201,6 +210,8 @@ func _physics_process(delta):
 	move_and_slide()
 
 func shoot_arrow():
+	if pause_mouse_movement:
+		return
 	nocked_arrow.visible=false
 	if (ap_release.playing==false and shooting_sound_started==false):
 		ap_release.play()
@@ -251,6 +262,8 @@ func updateAim(id,aim):
 			aiming=aim
 	else:
 		aiming=Input.is_action_pressed("Aim")
+		if pause_mouse_movement:
+			return
 	
 	if aiming and !crouch_raycast:
 		aim_ik.start()

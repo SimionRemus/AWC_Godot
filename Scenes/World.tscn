@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://b5bw37phe46ik"]
+[gd_scene load_steps=37 format=3 uid="uid://b5bw37phe46ik"]
 
 [ext_resource type="Script" path="res://Scripts/World.gd" id="1_ux20h"]
 [ext_resource type="Environment" uid="uid://xwxsqngt4cnn" path="res://_Assets/World.tres" id="2_ap2k5"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" path="res://Scripts/MainMenu.gd" id="16_r1qkm"]
 [ext_resource type="PackedScene" uid="uid://d4hgxuihgipq2" path="res://Scenes/UI/resolution_control.tscn" id="17_t8v0q"]
 [ext_resource type="PackedScene" uid="uid://7uyi7dxsm1s" path="res://Scenes/UI/window_mode_control.tscn" id="18_ycldp"]
+[ext_resource type="Script" path="res://Scripts/Environ_Options.gd" id="19_5abl2"]
 
 [sub_resource type="Shader" id="Shader_wci0u"]
 code = "shader_type fog;
@@ -59,8 +60,6 @@ use_hdr = true
 noise_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1vqtu"]
-width = 1024
-height = 1024
 seamless = true
 noise = SubResource("FastNoiseLite_6oqb3")
 
@@ -168,9 +167,11 @@ spawn_limit = 8
 [node name="Environment" type="Node3D" parent="."]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+unique_name_in_owner = true
 environment = ExtResource("2_ap2k5")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+unique_name_in_owner = true
 transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 light_color = Color(1, 1, 0.788235, 1)
 light_energy = 1.2
@@ -184,6 +185,7 @@ directional_shadow_mode = 1
 
 [node name="FogVolume" type="FogVolume" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+visible = false
 size = Vector3(60, 4, 60)
 material = SubResource("ShaderMaterial_slr3f")
 
@@ -231,16 +233,19 @@ block_data = SubResource("Resource_tse7r")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("16_r1qkm")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="UI"]
 follow_viewport_enabled = true
 
 [node name="MainMenu" type="Control" parent="UI/CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -371,6 +376,7 @@ mouse_filter = 2
 texture = ExtResource("13_1vofo")
 
 [node name="Options" type="Control" parent="UI/CanvasLayer" node_paths=PackedStringArray("main_menu")]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -387,17 +393,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 160
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = 20
+theme_override_constants/separation = 0
 alignment = 1
 
 [node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 48
 text = "Options"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -405,80 +414,126 @@ vertical_alignment = 1
 [node name="ScrollContainer" type="ScrollContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+follow_focus = true
+scroll_horizontal_custom_step = 1552.51
 horizontal_scroll_mode = 0
 
 [node name="Tabs" type="HBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
-size_flags_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 300
+alignment = 1
 
 [node name="Input" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
 theme_override_constants/separation = 30
 
 [node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 28
 text = "Input Settings"
-horizontal_alignment = 3
+horizontal_alignment = 1
 vertical_alignment = 3
 
 [node name="Container" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input"]
 layout_mode = 2
-theme_override_constants/separation = 56
+size_flags_vertical = 3
+theme_override_constants/separation = 20
 
 [node name="Hotkey_rebind_item" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "Left"
 
 [node name="Hotkey_rebind_item2" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "Right"
 
 [node name="Hotkey_rebind_item3" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "Forward"
 
 [node name="Hotkey_rebind_item4" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "Backward"
 
 [node name="Hotkey_rebind_item5" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "Jump"
 
 [node name="Hotkey_rebind_item6" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "Crouch"
 
 [node name="Hotkey_rebind_item7" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "Sprint"
 
 [node name="Hotkey_rebind_item8" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "Dance"
 
 [node name="Hotkey_rebind_item9" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "Die"
 
 [node name="Hotkey_rebind_item10" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
 layout_mode = 2
+size_flags_horizontal = 0
 action_name = "ToggleMouseCaptured"
+
+[node name="Hotkey_rebind_item11" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+size_flags_horizontal = 0
+action_name = "Skills"
+
+[node name="Hotkey_rebind_item12" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+size_flags_horizontal = 0
+action_name = "Trigger_Skill_1"
+
+[node name="Hotkey_rebind_item13" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+size_flags_horizontal = 0
+action_name = "Trigger_Skill_2"
+
+[node name="Hotkey_rebind_item14" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+size_flags_horizontal = 0
+action_name = "Trigger_Skill_3"
+
+[node name="Hotkey_rebind_item15" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Input/Container" instance=ExtResource("16_6thak")]
+layout_mode = 2
+size_flags_horizontal = 0
+action_name = "Trigger_Skill_4"
 
 [node name="GFX" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 30
 
 [node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 28
 text = "Graphics Settings"
+horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX"]
 layout_mode = 2
-theme_override_constants/separation = 56
+size_flags_vertical = 3
+theme_override_constants/separation = 45
 
 [node name="Resolution_Control" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer" instance=ExtResource("17_t8v0q")]
 layout_mode = 2
@@ -486,12 +541,101 @@ layout_mode = 2
 [node name="window_mode_control" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer" instance=ExtResource("18_ycldp")]
 layout_mode = 2
 
+[node name="Environ_Options" type="GridContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 30
+columns = 3
+script = ExtResource("19_5abl2")
+
+[node name="SDFGI" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "SDFGI"
+
+[node name="VSeparator" type="VSeparator" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="SDFGI_BTN" type="CheckButton" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("10_nxyhw")
+button_pressed = true
+
+[node name="SSAO" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "SSAO"
+
+[node name="VSeparator2" type="VSeparator" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="SSAO_BTN" type="CheckButton" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("10_nxyhw")
+button_pressed = true
+
+[node name="GLOW" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "GLOW"
+
+[node name="VSeparator3" type="VSeparator" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="GLOW_BTN" type="CheckButton" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("10_nxyhw")
+button_pressed = true
+
+[node name="SHADOWS" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "SHADOWS"
+
+[node name="VSeparator4" type="VSeparator" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="SHADOWS_BTN" type="CheckButton" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("10_nxyhw")
+button_pressed = true
+
+[node name="Shadow_Qual" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Shadow Quality"
+
+[node name="VSeparator5" type="VSeparator" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Shadow_Qual_BTN" type="OptionButton" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options"]
+custom_minimum_size = Vector2(128, 30)
+layout_mode = 2
+theme = ExtResource("10_nxyhw")
+allow_reselect = true
+
 [node name="Sound" type="VBoxContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs"]
 layout_mode = 2
 theme_override_constants/separation = 30
 
 [node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Sound"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 28
 text = "Sound Settings"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -513,7 +657,9 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Access"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 28
 text = "Accesibility"
+horizontal_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/Access"]
 layout_mode = 2
@@ -522,23 +668,24 @@ columns = 2
 [node name="Return" type="Button" parent="UI/CanvasLayer/Options/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 0
 theme = ExtResource("10_nxyhw")
 text = "Return"
 
 [node name="Background2" type="TextureRect" parent="UI/CanvasLayer/Options"]
+visible = false
 modulate = Color(1, 1, 1, 0.501961)
 show_behind_parent = true
 layout_mode = 0
 offset_right = 7360.0
 offset_bottom = 4912.0
-scale = Vector2(0.265, 0.265)
+scale = Vector2(0.265813, 0.265)
 size_flags_horizontal = 6
 size_flags_vertical = 6
 mouse_filter = 2
 texture = ExtResource("13_1vofo")
 
 [node name="GameplayUI" type="Control" parent="UI/CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -547,6 +694,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="FPS_Counter" type="Label" parent="UI/CanvasLayer/GameplayUI"]
 layout_mode = 1
@@ -623,4 +771,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.9264, 0, 0)
 [connection signal="pressed" from="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/HBoxContainer/HostGame_btn" to="UI/CanvasLayer/PlayMenu" method="_on_host_game_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/Join/JoinGame_btn" to="UI/CanvasLayer/PlayMenu" method="_on_join_game_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/PlayMenu/MarginContainer/VBoxContainer/Return" to="UI/CanvasLayer/PlayMenu" method="_on_return_pressed"]
+[connection signal="toggled" from="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options/SDFGI_BTN" to="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options" method="_on_sdfgi_btn_toggled"]
+[connection signal="toggled" from="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options/SSAO_BTN" to="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options" method="_on_ssao_btn_toggled"]
+[connection signal="toggled" from="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options/GLOW_BTN" to="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options" method="_on_glow_btn_toggled"]
+[connection signal="toggled" from="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options/SHADOWS_BTN" to="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options" method="_on_shadows_btn_toggled"]
+[connection signal="item_selected" from="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options/Shadow_Qual_BTN" to="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/ScrollContainer/Tabs/GFX/VBoxContainer/Environ_Options" method="_on_shadow_qual_btn_item_selected"]
 [connection signal="pressed" from="UI/CanvasLayer/Options/MarginContainer/VBoxContainer/Return" to="UI/CanvasLayer/Options" method="_on_return_pressed"]

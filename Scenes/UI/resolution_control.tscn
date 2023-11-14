@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://d4hgxuihgipq2"]
+[gd_scene load_steps=3 format=3 uid="uid://d4hgxuihgipq2"]
 
 [ext_resource type="Script" path="res://Scripts/UI/resolution_control.gd" id="1_2e1m2"]
+[ext_resource type="Theme" uid="uid://bykobr3irqs7i" path="res://_Assets/UI/Theme_1.tres" id="2_vbc1x"]
 
 [node name="Resolution_Control" type="Control"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,3 +30,4 @@ theme_override_constants/separation = 16
 [node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
+theme = ExtResource("2_vbc1x")

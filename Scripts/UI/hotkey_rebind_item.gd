@@ -35,6 +35,16 @@ func set_action_name() ->void:
 			label.text="_DEBUG_ Die"
 		"ToggleMouseCaptured":
 			label.text="Pause menu"
+		"Skills":
+			label.text="Toggle Skill Menu"
+		"Trigger_Skill_1":
+			label.text="Skill 1"
+		"Trigger_Skill_2":
+			label.text="Skill 2"
+		"Trigger_Skill_3":
+			label.text="Skill 3"
+		"Trigger_Skill_4":
+			label.text="Skill 4"
 
 func set_text_for_keys()->void:
 	var action_events= InputMap.action_get_events(action_name)

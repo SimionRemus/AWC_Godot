@@ -1,0 +1,149 @@
+[gd_scene load_steps=6 format=3 uid="uid://fql7580n8j40"]
+
+[ext_resource type="PackedScene" uid="uid://j10yy1j6l4ic" path="res://Scenes/Skills/BaseSkill.tscn" id="1_j6sv5"]
+[ext_resource type="Script" path="res://Scripts/Skills/skill_tree.gd" id="1_k2y27"]
+[ext_resource type="PackedScene" uid="uid://v45eqi828xw3" path="res://Scenes/Skills/base_skill_button.tscn" id="2_of2qv"]
+[ext_resource type="Texture2D" uid="uid://dofcdy2alhn8a" path="res://_Assets/Icon (2).svg" id="3_dkmo1"]
+[ext_resource type="Texture2D" uid="uid://d3bwisxuoxp12" path="res://_Assets/icon.svg" id="4_tp645"]
+
+[node name="Skill_tree" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k2y27")
+metadata/_edit_use_anchors_ = true
+
+[node name="UI_skill_tree" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="UI_skill_tree"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="UI_skill_tree"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -41.5
+offset_top = 72.0
+offset_right = 41.5
+offset_bottom = 98.0
+grow_horizontal = 2
+text = "SKILL TREE"
+
+[node name="TextureButton" parent="UI_skill_tree" instance=ExtResource("2_of2qv")]
+layout_mode = 1
+anchor_left = 0.488021
+anchor_top = 0.124074
+anchor_right = 0.521021
+anchor_bottom = 0.183074
+disabled = false
+
+[node name="TextureButton2" parent="UI_skill_tree/TextureButton" instance=ExtResource("2_of2qv")]
+layout_mode = 1
+anchor_left = -7.0625
+anchor_top = 4.8125
+anchor_right = -7.0625
+anchor_bottom = 4.8125
+offset_left = -254.0
+offset_top = -136.0
+offset_right = -190.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("3_dkmo1")
+
+[node name="TextureButton3" parent="UI_skill_tree/TextureButton" instance=ExtResource("2_of2qv")]
+layout_mode = 1
+anchor_left = 13.6875
+anchor_top = 4.6875
+anchor_right = 13.6875
+anchor_bottom = 4.6875
+offset_left = -298.0
+offset_top = -142.0
+offset_right = -234.0
+offset_bottom = -78.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("3_dkmo1")
+
+[node name="TextureButton4" parent="UI_skill_tree/TextureButton/TextureButton3" instance=ExtResource("2_of2qv")]
+layout_mode = 1
+anchor_left = 5.53125
+anchor_top = 1.875
+anchor_right = 5.53125
+anchor_bottom = 1.875
+offset_left = -218.0
+offset_top = 66.0
+offset_right = -154.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("3_dkmo1")
+
+[node name="TextureButton5" parent="UI_skill_tree/TextureButton/TextureButton3" instance=ExtResource("2_of2qv")]
+layout_mode = 1
+anchor_left = 0.9375
+anchor_top = 1.96875
+anchor_right = 0.9375
+anchor_bottom = 1.96875
+offset_left = -218.0
+offset_top = 66.0
+offset_right = -154.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("3_dkmo1")
+
+[node name="TextureButton5" parent="UI_skill_tree/TextureButton/TextureButton3/TextureButton5" instance=ExtResource("2_of2qv")]
+layout_mode = 1
+anchor_left = 4.74998
+anchor_top = 0.531251
+anchor_right = 4.74998
+anchor_bottom = 0.531251
+offset_left = -218.0
+offset_top = 66.0
+offset_right = -154.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("3_dkmo1")
+
+[node name="TextureButton6" parent="UI_skill_tree/TextureButton/TextureButton3/TextureButton5" instance=ExtResource("2_of2qv")]
+layout_mode = 1
+anchor_left = 4.15623
+anchor_top = -2.25
+anchor_right = 4.15623
+anchor_bottom = -2.25
+offset_left = -376.0
+offset_top = 258.0
+offset_right = -312.0
+offset_bottom = 322.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("3_dkmo1")
+
+[node name="Skill_container" type="Node" parent="."]
+
+[node name="Skill" parent="Skill_container" instance=ExtResource("1_j6sv5")]
+skill_name = "skill 1"
+icon = ExtResource("3_dkmo1")
+
+[node name="Skill2" parent="Skill_container" instance=ExtResource("1_j6sv5")]
+skill_name = "skill 2"
+icon = ExtResource("4_tp645")

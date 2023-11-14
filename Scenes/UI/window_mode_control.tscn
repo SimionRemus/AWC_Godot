@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://7uyi7dxsm1s"]
+[gd_scene load_steps=3 format=3 uid="uid://7uyi7dxsm1s"]
 
 [ext_resource type="Script" path="res://Scripts/UI/window_mode_control.gd" id="1_nruu3"]
+[ext_resource type="Theme" uid="uid://bykobr3irqs7i" path="res://_Assets/UI/Theme_1.tres" id="2_6k7es"]
 
 [node name="window_mode_control" type="Control"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,11 +14,13 @@ grow_vertical = 2
 script = ExtResource("1_nruu3")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Label" type="Label" parent="HBoxContainer"]
-custom_minimum_size = Vector2(128, 0)
+custom_minimum_size = Vector2(128, 30)
 layout_mode = 2
 text = "Window Mode"
 
@@ -25,5 +29,6 @@ layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
-custom_minimum_size = Vector2(128, 0)
+custom_minimum_size = Vector2(128, 30)
 layout_mode = 2
+theme = ExtResource("2_6k7es")

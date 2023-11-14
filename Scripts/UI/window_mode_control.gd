@@ -13,6 +13,7 @@ func _ready():
 	option_button.item_selected.connect(on_window_mode_changed)
 	for i in WINDOW_MODE_ARRAY:
 		option_button.add_item(i)
+	option_button.selected=2
 
 
 func on_window_mode_changed(index:int)->void:

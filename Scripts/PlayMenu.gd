@@ -11,7 +11,6 @@ func _ready():
 
 func _on_host_game_pressed():
 	NetworkManager._on_host_game_pressed()
-	OS.get
 
 
 func _on_join_game_pressed():

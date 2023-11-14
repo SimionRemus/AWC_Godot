@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://j10yy1j6l4ic"]
+
+[ext_resource type="Script" path="res://Scripts/Skills/BaseSkill.gd" id="1_i40wo"]
+
+[node name="Skill" type="Node"]
+script = ExtResource("1_i40wo")
