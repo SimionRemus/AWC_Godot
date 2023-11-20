@@ -1,10 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://fql7580n8j40"]
+[gd_scene load_steps=15 format=3 uid="uid://fql7580n8j40"]
 
-[ext_resource type="PackedScene" uid="uid://j10yy1j6l4ic" path="res://Scenes/Skills/BaseSkill.tscn" id="1_j6sv5"]
 [ext_resource type="Script" path="res://Scripts/Skills/skill_tree.gd" id="1_k2y27"]
 [ext_resource type="PackedScene" uid="uid://v45eqi828xw3" path="res://Scenes/Skills/base_skill_button.tscn" id="2_of2qv"]
+[ext_resource type="Texture2D" uid="uid://bvg8p3t6q815" path="res://_Assets/Textures/texture_05.png" id="3_1c81u"]
 [ext_resource type="Texture2D" uid="uid://dofcdy2alhn8a" path="res://_Assets/Icon (2).svg" id="3_dkmo1"]
-[ext_resource type="Texture2D" uid="uid://d3bwisxuoxp12" path="res://_Assets/icon.svg" id="4_tp645"]
+[ext_resource type="Texture2D" uid="uid://cicr6m8nn2qd4" path="res://_Assets/Textures/texture_07.png" id="4_80fvy"]
+[ext_resource type="Texture2D" uid="uid://dfe4e31a2drjt" path="res://_Assets/Game_icon.png" id="5_m7icn"]
+[ext_resource type="Texture2D" uid="uid://bjppyr7jrui66" path="res://_Assets/Textures/Rock028.png" id="7_0rnfo"]
+[ext_resource type="Texture2D" uid="uid://bym3jw8i5wiva" path="res://_Assets/Textures/Ground037.png" id="8_wksa1"]
+[ext_resource type="Texture2D" uid="uid://32veyln1ex23" path="res://_Assets/Textures/2d9117edbcb354fb2cd7766d3448a3c5.jpg" id="9_s5pp1"]
+[ext_resource type="Texture2D" uid="uid://dvqqflruxt06d" path="res://_Assets/Textures/kisspng-reticle.png" id="10_bysmi"]
+[ext_resource type="Texture2D" uid="uid://dbe6ba8boab04" path="res://_Assets/Textures/slot3_albedo_bump.png" id="11_ctpkn"]
+[ext_resource type="Texture2D" uid="uid://c1715xe5gb6al" path="res://_Assets/Textures/slot1_albedo_bump.png" id="12_qitdk"]
+[ext_resource type="Texture2D" uid="uid://dir5mtv7vbd2n" path="res://_Assets/Textures/slot0_normal_roughness.png" id="13_5y2fb"]
+[ext_resource type="PackedScene" uid="uid://corempl65ba8p" path="res://Scenes/Skills/Disguise.tscn" id="16_gccdw"]
 
 [node name="Skill_tree" type="Control"]
 layout_mode = 3
@@ -26,6 +35,7 @@ grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="UI_skill_tree"]
+self_modulate = Color(0, 1, 0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,118 +44,393 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="UI_skill_tree"]
+[node name="MarginContainer" type="MarginContainer" parent="UI_skill_tree"]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 30
+
+[node name="SkillTree" type="HBoxContainer" parent="UI_skill_tree/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 270
+alignment = 1
+
+[node name="Mobility" type="Label" parent="UI_skill_tree/MarginContainer/SkillTree"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Mobility"
+
+[node name="GridContainer" type="GridContainer" parent="UI_skill_tree/MarginContainer/SkillTree/Mobility"]
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-offset_left = -41.5
-offset_top = 72.0
-offset_right = 41.5
-offset_bottom = 98.0
+anchor_bottom = 0.5
+offset_left = -134.0
+offset_top = 47.0
+offset_right = 134.0
+offset_bottom = 111.0
 grow_horizontal = 2
-text = "SKILL TREE"
+grow_vertical = 2
+columns = 5
 
-[node name="TextureButton" parent="UI_skill_tree" instance=ExtResource("2_of2qv")]
-layout_mode = 1
-anchor_left = 0.488021
-anchor_top = 0.124074
-anchor_right = 0.521021
-anchor_bottom = 0.183074
+[node name="Athlete" parent="UI_skill_tree/MarginContainer/SkillTree/Mobility/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "Athlete: 
+Increase movement and sprint speed by X*(1.1, 1.25, 1.5)  (TBD)"
 disabled = false
-skill_name = "skill 1"
+texture_normal = ExtResource("3_1c81u")
+skill_name = "Athlete"
 
-[node name="TextureButton2" parent="UI_skill_tree/TextureButton" instance=ExtResource("2_of2qv")]
-layout_mode = 1
-anchor_left = -7.0625
-anchor_top = 4.8125
-anchor_right = -7.0625
-anchor_bottom = 4.8125
-offset_left = -254.0
-offset_top = -136.0
-offset_right = -190.0
-offset_bottom = -72.0
-grow_horizontal = 2
-grow_vertical = 2
-texture_normal = ExtResource("3_dkmo1")
-skill_name = "skill 2"
+[node name="Blink" parent="UI_skill_tree/MarginContainer/SkillTree/Mobility/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Blink:
+Teleport where you are targeting up to X*(1, 1.5, 2) meters (TBD)"
+disabled = false
+skill_name = "Blink"
 
-[node name="TextureButton3" parent="UI_skill_tree/TextureButton" instance=ExtResource("2_of2qv")]
-layout_mode = 1
-anchor_left = 13.6875
-anchor_top = 4.6875
-anchor_right = 13.6875
-anchor_bottom = 4.6875
-offset_left = -298.0
-offset_top = -142.0
-offset_right = -234.0
-offset_bottom = -78.0
-grow_horizontal = 2
-grow_vertical = 2
-texture_normal = ExtResource("3_dkmo1")
-
-[node name="TextureButton4" parent="UI_skill_tree/TextureButton/TextureButton3" instance=ExtResource("2_of2qv")]
-layout_mode = 1
-anchor_left = 5.53125
+[node name="ArrowSwap" parent="UI_skill_tree/MarginContainer/SkillTree/Mobility/GridContainer/Blink" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+anchors_preset = 0
 anchor_top = 1.875
-anchor_right = 5.53125
-anchor_bottom = 1.875
-offset_left = -218.0
-offset_top = 66.0
-offset_right = -154.0
-offset_bottom = 130.0
-grow_horizontal = 2
-grow_vertical = 2
-texture_normal = ExtResource("3_dkmo1")
+anchor_right = 1.0
+anchor_bottom = 2.875
+offset_right = 0.0
+offset_bottom = 0.0
+tooltip_text = "Arrow Swap:
+Teleport where your arrow lands. Arrow speed is (50%/75%/100%) of your normal arrow speed."
+texture_normal = ExtResource("4_80fvy")
+skill_name = "ArrowSwap"
 
-[node name="TextureButton5" parent="UI_skill_tree/TextureButton/TextureButton3" instance=ExtResource("2_of2qv")]
-layout_mode = 1
-anchor_left = 0.9375
-anchor_top = 1.96875
-anchor_right = 0.9375
-anchor_bottom = 1.96875
-offset_left = -218.0
-offset_top = 66.0
-offset_right = -154.0
-offset_bottom = 130.0
-grow_horizontal = 2
-grow_vertical = 2
-texture_normal = ExtResource("3_dkmo1")
+[node name="Dodge" parent="UI_skill_tree/MarginContainer/SkillTree/Mobility/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Dodge:
+Become invulnerable for X*(1, 1.5, 2) seconds (TBD)"
+disabled = false
+texture_normal = ExtResource("5_m7icn")
+skill_name = "Dodge"
 
-[node name="TextureButton5" parent="UI_skill_tree/TextureButton/TextureButton3/TextureButton5" instance=ExtResource("2_of2qv")]
-layout_mode = 1
-anchor_left = 4.74998
-anchor_top = 0.531251
-anchor_right = 4.74998
-anchor_bottom = 0.531251
-offset_left = -218.0
-offset_top = 66.0
-offset_right = -154.0
-offset_bottom = 130.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="UncannyReflexes" parent="UI_skill_tree/MarginContainer/SkillTree/Mobility/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Uncanny Reflexes:
+Has a chance of (3%/7%/10%) of not being killed when hit"
+disabled = false
 texture_normal = ExtResource("3_dkmo1")
+skill_name = "UncannyReflexes"
 
-[node name="TextureButton6" parent="UI_skill_tree/TextureButton/TextureButton3/TextureButton5" instance=ExtResource("2_of2qv")]
+[node name="Marskmanship" type="Label" parent="UI_skill_tree/MarginContainer/SkillTree"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Marskmanship"
+
+[node name="GridContainer" type="GridContainer" parent="UI_skill_tree/MarginContainer/SkillTree/Marskmanship"]
 layout_mode = 1
-anchor_left = 4.15623
-anchor_top = -2.25
-anchor_right = 4.15623
-anchor_bottom = -2.25
-offset_left = -376.0
-offset_top = 258.0
-offset_right = -312.0
-offset_bottom = 322.0
+anchors_preset = -1
+anchor_left = -0.655172
+anchor_top = 2.30769
+anchor_right = 1.65517
+anchor_bottom = 4.76923
 grow_horizontal = 2
 grow_vertical = 2
+columns = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Quickdraw" parent="UI_skill_tree/MarginContainer/SkillTree/Marskmanship/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Quickdraw:
+Reload speed reduced by X*(1,1.5,2) seconds (TBD)"
+disabled = false
+texture_normal = ExtResource("7_0rnfo")
+skill_name = "Quickdraw"
+
+[node name="Quickshot" parent="UI_skill_tree/MarginContainer/SkillTree/Marskmanship/GridContainer/Quickdraw" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+anchors_preset = 0
+anchor_top = 1.875
+anchor_right = 1.0
+anchor_bottom = 2.875
+offset_right = 0.0
+offset_bottom = 0.0
+tooltip_text = "Quickshot:
+Shoots 4/5/6 arrows in quick succession"
+texture_normal = ExtResource("8_wksa1")
+skill_name = "Quickshot"
+
+[node name="Multishot" parent="UI_skill_tree/MarginContainer/SkillTree/Marskmanship/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Multishot:
+Shoot (3/5/5) arrows every (7th/7th/5rd) shot"
+disabled = false
+texture_normal = ExtResource("9_s5pp1")
+skill_name = "Multishot"
+
+[node name="ExplosiveShot" parent="UI_skill_tree/MarginContainer/SkillTree/Marskmanship/GridContainer/Multishot" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+anchors_preset = 0
+anchor_top = 1.875
+anchor_right = 1.0
+anchor_bottom = 2.875
+offset_right = 0.0
+offset_bottom = 0.0
+tooltip_text = "Explosive Shot:
+Shoots am arrow that will kill everyone in a X*(1,1.5,2) meter area around the point of contact of the arrow"
+texture_normal = ExtResource("10_bysmi")
+skill_name = "ExplosiveShot"
+
+[node name="DrawStrength" parent="UI_skill_tree/MarginContainer/SkillTree/Marskmanship/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Draw Strength:
+Arrow speed is increased by (1.5,2,2.5)"
+disabled = false
+texture_normal = ExtResource("11_ctpkn")
+skill_name = "DrawStrength"
+
+[node name="PiercingShot" parent="UI_skill_tree/MarginContainer/SkillTree/Marskmanship/GridContainer/DrawStrength" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+anchors_preset = 0
+anchor_top = 1.875
+anchor_right = 1.0
+anchor_bottom = 2.875
+offset_right = 0.0
+offset_bottom = 0.0
+tooltip_text = "Piercing Shot:
+Has a 3%/6%/9% chance of shooting an arrow that pierces people and objects"
+texture_normal = ExtResource("5_m7icn")
+skill_name = "PiercingShot"
+
+[node name="EtherealShot" parent="UI_skill_tree/MarginContainer/SkillTree/Marskmanship/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Ethereal Shot:
+If target evades arrow, their movement will be slowed by (20%/40%/60%) for the next (1/1.5/2) seconds."
+disabled = false
+texture_normal = ExtResource("4_80fvy")
+skill_name = "EtherealShot"
+
+[node name="EnsnaringShot" parent="UI_skill_tree/MarginContainer/SkillTree/Marskmanship/GridContainer/EtherealShot" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+anchors_preset = 0
+anchor_top = 1.875
+anchor_right = 1.0
+anchor_bottom = 2.875
+offset_right = 0.0
+offset_bottom = 0.0
+tooltip_text = "Ensnaring Shot:
+Shoots an arrow that will slow everyone in a  X*(1,1.5,2) meter area around the point of contact of the arrow for  X*(1,1.5,2) seconds (TBD)"
+texture_normal = ExtResource("3_1c81u")
+skill_name = "EnsnaringShot"
+
+[node name="Deception" type="Label" parent="UI_skill_tree/MarginContainer/SkillTree"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Deception"
+
+[node name="GridContainer" type="GridContainer" parent="UI_skill_tree/MarginContainer/SkillTree/Deception"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.62658
+anchor_top = 2.30769
+anchor_right = 2.62658
+anchor_bottom = 4.76923
+offset_right = -1.52588e-05
+grow_horizontal = 2
+grow_vertical = 2
+columns = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Illusion" parent="UI_skill_tree/MarginContainer/SkillTree/Deception/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Illusion:
+Create (1,2,3) illusions that follow your movement but in different random directions in a +/- 45deg arc"
+disabled = false
+skill_name = "Illusion"
+
+[node name="Hide" parent="UI_skill_tree/MarginContainer/SkillTree/Deception/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Hide:
+Invisible(immobile, 1/2 speed, full speed) for X seconds (TBD)"
+disabled = false
+texture_normal = ExtResource("3_1c81u")
+skill_name = "Hide"
+
+[node name="Disguise" parent="UI_skill_tree/MarginContainer/SkillTree/Deception/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Disguise:
+Becomes part of the environment until aiming. Movement during disguise is (0%, 50%, 100%)."
+disabled = false
+texture_normal = ExtResource("4_80fvy")
+skill_name = "Disguise"
+
+[node name="Blur" parent="UI_skill_tree/MarginContainer/SkillTree/Deception/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Blur:
+Has a chance of (3%/7%/10%) of not being killed when hit"
+disabled = false
+texture_normal = ExtResource("12_qitdk")
+skill_name = "Blur"
+
+[node name="SoundDecoy" parent="UI_skill_tree/MarginContainer/SkillTree/Deception/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Sound Decoy:
+Shoots an arrow that will make noise in a X*(1,1.5,2) meter area around the point of contact of the arrow for  X*(1,1.5,2) seconds (TBD)"
+disabled = false
+texture_normal = ExtResource("5_m7icn")
+skill_name = "SoundDecoy"
+
+[node name="Detection" type="Label" parent="UI_skill_tree/MarginContainer/SkillTree"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Detection"
+
+[node name="GridContainer" type="GridContainer" parent="UI_skill_tree/MarginContainer/SkillTree/Detection"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.71053
+anchor_top = 2.30769
+anchor_right = 2.71053
+anchor_bottom = 4.76923
+grow_horizontal = 2
+grow_vertical = 2
+columns = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="OnTheWind" parent="UI_skill_tree/MarginContainer/SkillTree/Detection/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "On The Wind:
+Show pointers in the direction where all enemies are for the next X*(1, 1.5, 2) seconds (TBD)"
+disabled = false
 texture_normal = ExtResource("3_dkmo1")
+skill_name = "OnTheWind"
+
+[node name="KeenEyes" parent="UI_skill_tree/MarginContainer/SkillTree/Detection/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Keen Eyes
+Reveals the fog around you in a X*(1, 1.5, 2) meter radius (TBD)"
+disabled = false
+skill_name = "KeenEyes"
+
+[node name="EldritchSight" parent="UI_skill_tree/MarginContainer/SkillTree/Detection/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Eldritch Sight:
+Reveals hidden enemies in a  X*(1, 1.5, 2) meter radius (TBD)"
+disabled = false
+texture_normal = ExtResource("10_bysmi")
+skill_name = "EldritchSight"
+
+[node name="LookBeyond" parent="UI_skill_tree/MarginContainer/SkillTree/Detection/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Look Beyond:
+Reveals disguised enemies in a  X*(1, 1.5, 2) meter radius (TBD)"
+disabled = false
+texture_normal = ExtResource("4_80fvy")
+skill_name = "LookBeyond"
+
+[node name="PixieDust" parent="UI_skill_tree/MarginContainer/SkillTree/Detection/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Pixie Dust:
+Reveals illusions in a  X*(1, 1.5, 2) meter radius (TBD)"
+disabled = false
+texture_normal = ExtResource("13_5y2fb")
+skill_name = "PixieDust"
+
+[node name="Marcantilism" type="Label" parent="UI_skill_tree/MarginContainer/SkillTree"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Marcantilism"
+
+[node name="GridContainer" type="GridContainer" parent="UI_skill_tree/MarginContainer/SkillTree/Marcantilism"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.480392
+anchor_top = 2.26923
+anchor_right = 1.48039
+anchor_bottom = 4.73077
+grow_horizontal = 2
+grow_vertical = 2
+columns = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="GreedIsGood" parent="UI_skill_tree/MarginContainer/SkillTree/Marcantilism/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Greed Is Good:
+You gain 50% chance to get a 2x/3x/4x money on kills
+_You are also guaranteed 2x/3x/4x money on quadruple kills and beyond._"
+disabled = false
+texture_normal = ExtResource("3_1c81u")
+skill_name = "GreedIsGood"
+
+[node name="Gambler" parent="UI_skill_tree/MarginContainer/SkillTree/Marcantilism/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Gambler:
+You gain 30%/25%/20% chance to get no money on kills and 70%/75%/80% to get 2x/2x/3x the money."
+disabled = false
+skill_name = "Gambler"
+
+[node name="Investor" parent="UI_skill_tree/MarginContainer/SkillTree/Marcantilism/GridContainer" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+tooltip_text = "Investor:
+If you have enough gold to buy 3 skills (minimum 10 gold) and you don't spend it, you gain +3 gold per kill"
+disabled = false
+texture_normal = ExtResource("5_m7icn")
+skill_name = "Investor"
+
+[node name="Active Skills" type="HBoxContainer" parent="UI_skill_tree/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="BaseSkillButton" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton2" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton3" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton4" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton5" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton6" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton7" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton8" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton9" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton10" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
+
+[node name="BaseSkillButton11" parent="UI_skill_tree/MarginContainer/Active Skills" instance=ExtResource("2_of2qv")]
+layout_mode = 2
+disabled = false
 
 [node name="Skill_container" type="Node" parent="."]
 
-[node name="Skill2" parent="Skill_container" instance=ExtResource("1_j6sv5")]
-skill_name = "skill 2"
-icon = ExtResource("4_tp645")
-
-[node name="Skill" parent="Skill_container" instance=ExtResource("1_j6sv5")]
-skill_name = "skill 1"
-icon = ExtResource("3_dkmo1")
+[node name="Disguise" parent="Skill_container" instance=ExtResource("16_gccdw")]
+skill_level = 3

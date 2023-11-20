@@ -7,7 +7,7 @@ class_name SkillNode
 
 @export var skill_name: String
 
-var max_level=2
+var max_level=3
 var level: int=0:
 	set(value):
 		level=value
@@ -17,9 +17,13 @@ var level: int=0:
 func _ready():
 	label.text="0/"+str(max_level)
 	if get_parent() is SkillNode:
+#		get_global_rect().position
+#		get_global_rect().size
 		line_2d.add_point(global_position+size/2)
 		line_2d.add_point(get_parent().global_position + get_parent().size/2)
-
+		print_debug(global_position+size/2)
+		print_debug(get_global_rect().position+get_global_rect().size/2)
+#		print_debug(get_parent().global_position + get_parent().size/2)
 func _on_gui_input(event):
 	if not disabled:
 		if event is InputEventMouseButton and event.pressed:

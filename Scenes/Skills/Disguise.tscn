@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://corempl65ba8p"]
+
+[ext_resource type="PackedScene" uid="uid://j10yy1j6l4ic" path="res://Scenes/Skills/BaseSkill.tscn" id="1_iewys"]
+[ext_resource type="Script" path="res://Scripts/Skills/Disguise.gd" id="2_4ls7f"]
+[ext_resource type="AudioStream" uid="uid://2hmggml5i3tx" path="res://audio/sfx/Skills/Disguise/512247__neospica__text-notification.wav" id="3_wor02"]
+
+[node name="Disguise" instance=ExtResource("1_iewys")]
+script = ExtResource("2_4ls7f")
+skill_level = 3
+skill_name = "Disguise"
+
+[node name="Activate" type="AudioStreamPlayer" parent="." index="0"]
+stream = ExtResource("3_wor02")
+bus = &"SFX"
+
+[node name="Deactivate" type="AudioStreamPlayer" parent="." index="1"]
+stream = ExtResource("3_wor02")
+bus = &"SFX"

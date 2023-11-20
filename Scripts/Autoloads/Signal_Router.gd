@@ -22,11 +22,13 @@ extends Node
 ################################################################
 
 signal pause
-
 func _on_pause():
 	pause.emit()
 	
 signal unpause
-
 func _on_unpause():
 	unpause.emit()
+
+signal player_disguise_finished
+func _on_player_disguise_finished():
+	player_disguise_finished.emit()

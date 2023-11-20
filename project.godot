@@ -8,6 +8,10 @@
 
 config_version=5
 
+[addons]
+
+proton_scatter/always_show_gizmos=true
+
 [application]
 
 config/name="AWC"
@@ -139,3 +143,4 @@ Trigger_Skill_4={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+occlusion_culling/use_occlusion_culling=true

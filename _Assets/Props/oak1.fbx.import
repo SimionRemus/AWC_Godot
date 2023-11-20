@@ -1,0 +1,43 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://c3s0ltsr8fkhu"
+path="res://.godot/imported/oak1.fbx-3f95247e487d4a35986f21405ceec43c.scn"
+
+[deps]
+
+source_file="res://_Assets/Props/oak1.fbx"
+dest_files=["res://.godot/imported/oak1.fbx-3f95247e487d4a35986f21405ceec43c.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=0
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=false
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+import_script/path=""
+_subresources={
+"materials": {
+"Tree_0Mat": {
+"use_external/enabled": true,
+"use_external/path": ""
+},
+"Tree_1Mat": {
+"use_external/enabled": true,
+"use_external/path": ""
+}
+}
+}
+gltf/embedded_image_handling=0

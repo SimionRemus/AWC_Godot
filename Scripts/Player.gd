@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name Player
 
 ##| DEBUG and scoring|##
 @onready var name_label = $Name
@@ -6,6 +7,9 @@ extends CharacterBody3D
 var score:int=0
 @onready var skill_tree = $Skill_tree
 var pause_mouse_movement:bool = false
+
+##| Skill signals |##
+signal player_disguise_finished
 
 ##| Sound |##
 @onready var ap_nock = $AP_container/AP_nock
@@ -34,12 +38,17 @@ signal unpause
 @onready var ik_target_slot = $IK_Target_Slot
 @onready var nocked_arrow = $Archer_packed/Armature/GeneralSkeleton/BA3D_ArrowHand/ArrowSlot
 
-const walkSpeed:float= 5.0
-const runSpeed:float=10.0
-const crouchSpeed:float=2.5
+const default_walkSpeed:float= 5.0
+const default_runSpeed:float=10.0
+const default_crouchSpeed:float=2.5
+const default_jumpVelocity:float = 6
+
+var walkSpeed:float= default_walkSpeed
+var runSpeed:float=default_runSpeed
+var crouchSpeed:float=default_crouchSpeed
 const crouchDepth:float=0.5
 var crouch_raycast:bool=false
-const jumpVelocity:float = 6
+var jumpVelocity:float = default_jumpVelocity
 var was_on_floor:bool=true
 var was_respawned:bool=false
 var disable_movement:bool=false
@@ -68,6 +77,7 @@ func _enter_tree():
 	set_multiplayer_authority(name.to_int())
 	
 func _ready():
+	print_debug(position)
 	if not is_multiplayer_authority():
 		return
 	cam.current = is_multiplayer_authority()
@@ -182,19 +192,24 @@ func _physics_process(delta):
 	else:
 		shooting_sound_started=false	
 
-	#Special states (death, dance)
+	#Special states (aim,death, dance)
+	#Aiming
 	if(aiming and not pause_mouse_movement):
 		if (ap_nock.playing==false and aiming_sound_started==false):
 			ap_nock.play()
 			aiming_sound_started=true
+			# Following 2 lines are for disguise
+			player_disguise_finished.connect(signalRouter._on_player_disguise_finished)
+			player_disguise_finished.emit()
 		disable_movement=true
 	else:
 		aiming_sound_started=false
 		disable_movement=false
+	#Dancing
 	if(Input.is_action_just_pressed("Dance")):
 		disable_movement=true
+	#Dying
 	if(Input.is_action_just_pressed("Die") or is_dead):
-#		print_debug("DIED!")
 		disable_movement=true
 	if(disable_movement):
 		if(!aiming):
@@ -294,3 +309,11 @@ func _on_timer_timeout():
 	if is_multiplayer_authority():
 		rpc("updateAim",name,Input.is_action_pressed("Aim"))
 		rpc("spawnBullets",name,Input.is_action_just_pressed("Shoot")&& aiming and not reloading)
+
+
+func connect_skill_signals()->void:
+	skill_tree.get_node("Skill_container/Disguise").connect("disguise_triggered",on_disguise_triggered)
+	
+func on_disguise_triggered()->void:
+	get_node("Archer_packed").visible=false
+	

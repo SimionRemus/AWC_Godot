@@ -1,18 +1,11 @@
-[gd_scene load_steps=37 format=3 uid="uid://b5bw37phe46ik"]
+[gd_scene load_steps=28 format=3 uid="uid://b5bw37phe46ik"]
 
 [ext_resource type="Script" path="res://Scripts/World.gd" id="1_ux20h"]
 [ext_resource type="Environment" uid="uid://xwxsqngt4cnn" path="res://_Assets/World.tres" id="2_ap2k5"]
-[ext_resource type="Texture2D" uid="uid://ds3br8yt148e8" path="res://_Assets/Textures/slot0_albedo_bump.png" id="3_5oejx"]
-[ext_resource type="Texture2D" uid="uid://dir5mtv7vbd2n" path="res://_Assets/Textures/slot0_normal_roughness.png" id="4_8rwi6"]
-[ext_resource type="Texture2D" uid="uid://dbe6ba8boab04" path="res://_Assets/Textures/slot3_albedo_bump.png" id="5_tlxms"]
-[ext_resource type="Texture2D" uid="uid://cjaj6vdhx8ob5" path="res://_Assets/Textures/Ground040.png" id="6_5je2q"]
-[ext_resource type="Texture2D" uid="uid://6baeodvy3p8m" path="res://_Assets/Textures/slot3_normal_roughness.png" id="7_8pwbb"]
+[ext_resource type="Shader" path="res://Shaders/GridShader.gdshader" id="3_rus0d"]
 [ext_resource type="Script" path="res://Scripts/FPS_Counter.gd" id="7_xel1g"]
 [ext_resource type="Texture2D" uid="uid://dvqqflruxt06d" path="res://_Assets/Textures/kisspng-reticle.png" id="8_jwean"]
-[ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_blocks.gd" id="8_ovskq"]
 [ext_resource type="AudioStream" uid="uid://ofc62kl6b3s7" path="res://audio/music/Be Forest - Florence_NOT COMMERCIAL USE.mp3" id="9_gxi3i"]
-[ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_convex_block.gd" id="9_pdg62"]
-[ext_resource type="Script" path="res://addons/cyclops_level_builder/resources/convex_block_data.gd" id="10_0u87e"]
 [ext_resource type="Theme" uid="uid://bykobr3irqs7i" path="res://_Assets/UI/Theme_1.tres" id="10_nxyhw"]
 [ext_resource type="Texture2D" uid="uid://ds026xborfiv0" path="res://_Assets/UI/beautiful-shot-forest-with-tall-green-trees.jpg" id="13_1vofo"]
 [ext_resource type="Script" path="res://Scripts/OptionsMenu.gd" id="15_vxo4p"]
@@ -24,7 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://7uyi7dxsm1s" path="res://Scenes/UI/window_mode_control.tscn" id="18_ycldp"]
 [ext_resource type="Script" path="res://Scripts/Environ_Options.gd" id="19_5abl2"]
 
-[sub_resource type="Shader" id="Shader_wci0u"]
+[sub_resource type="Shader" id="Shader_7t750"]
 code = "shader_type fog;
 
 uniform sampler2D noise_tex:repeat_enable;
@@ -48,10 +41,10 @@ void fog() {
 "
 
 [sub_resource type="Gradient" id="Gradient_a2q3h"]
-offsets = PackedFloat32Array(0, 0.533898, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.282465, 3.79438e-07, 1.99049e-07, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.430168, 0.734637)
+colors = PackedColorArray(1, 1, 1, 1, 0.0619633, 0.15131, 0.149073, 1, 0, 0, 0, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_gt1ag"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_llw0l"]
 gradient = SubResource("Gradient_a2q3h")
 width = 512
 use_hdr = true
@@ -59,64 +52,37 @@ use_hdr = true
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_6oqb3"]
 noise_type = 0
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1vqtu"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_s5ljw"]
 seamless = true
 noise = SubResource("FastNoiseLite_6oqb3")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_slr3f"]
-shader = SubResource("Shader_wci0u")
+shader = SubResource("Shader_7t750")
 shader_parameter/noise_scale = 0.05
-shader_parameter/flatness = 2.511
-shader_parameter/density = 2.4
-shader_parameter/noise_tex = SubResource("NoiseTexture2D_1vqtu")
-shader_parameter/grad_tex = SubResource("GradientTexture1D_gt1ag")
+shader_parameter/flatness = 3.5
+shader_parameter/density = 1.0
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_s5ljw")
+shader_parameter/grad_tex = SubResource("GradientTexture1D_llw0l")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r3eg5"]
-albedo_texture = ExtResource("3_5oejx")
-normal_enabled = true
-normal_texture = ExtResource("4_8rwi6")
-uv2_triplanar = true
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iq080"]
+render_priority = 0
+shader = ExtResource("3_rus0d")
+shader_parameter/scale_0 = 10
+shader_parameter/scale_1 = 1
+shader_parameter/line_scale_0 = 0.01
+shader_parameter/line_scale_1 = 1.0
+shader_parameter/color_0 = Color(1, 1, 1, 1)
+shader_parameter/color_1 = Color(0, 0.160784, 0, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tv0qm"]
-albedo_texture = ExtResource("5_tlxms")
-normal_enabled = true
-normal_texture = ExtResource("7_8pwbb")
-uv2_triplanar = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x2vwy"]
-shading_mode = 2
-diffuse_mode = 2
-vertex_color_is_srgb = true
-albedo_texture = ExtResource("5_tlxms")
-metallic = 1.0
-metallic_specular = 0.0
-roughness_texture = ExtResource("7_8pwbb")
-ao_texture = ExtResource("6_5je2q")
-heightmap_enabled = true
-heightmap_texture = ExtResource("7_8pwbb")
-uv2_scale = Vector3(2.95, 2.95, 2.95)
-uv2_triplanar = true
-uv2_triplanar_sharpness = 0.732043
-
-[sub_resource type="Resource" id="Resource_tse7r"]
-script = ExtResource("10_0u87e")
-selected = false
-active = false
-collsion = true
-vertex_points = PackedVector3Array(-26, -1, -26, 26, -1, -26, 26, 0, -26, -26, 0, -26, 26, 0, 26, -26, 0, 26, 26, -1, 26, -26, -1, 26)
-vertex_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0)
-active_vertex = -1
-edge_vertex_indices = PackedInt32Array(0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 3, 2, 4, 6, 4, 1, 6, 7, 0, 5, 7, 6, 7)
-edge_selected = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-active_edge = -1
-edge_face_indices = PackedInt32Array(0, 5, 0, 2, 0, 1, 0, 3, 1, 4, 1, 3, 1, 2, 2, 4, 2, 5, 3, 5, 3, 4, 4, 5)
-face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
-face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 4, 5, 3, 2, 6, 4, 2, 1, 7, 0, 3, 5, 7, 5, 4, 6, 7, 6, 1, 0)
-face_material_indices = PackedInt32Array(-1, -1, -1, -1, -1, -1)
-face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 0)])
-face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
-active_face = -1
-face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4sqvu"]
+render_priority = 0
+shader = ExtResource("3_rus0d")
+shader_parameter/scale_0 = 4
+shader_parameter/scale_1 = 1
+shader_parameter/line_scale_0 = 0.01
+shader_parameter/line_scale_1 = 1.0
+shader_parameter/color_0 = Color(1, 1, 1, 1)
+shader_parameter/color_1 = Color(0, 0.160784, 0, 1)
 
 [sub_resource type="Animation" id="Animation_m7grl"]
 resource_name = "MainScreenAnimation"
@@ -184,9 +150,9 @@ shadow_opacity = 0.85
 directional_shadow_mode = 1
 
 [node name="FogVolume" type="FogVolume" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 visible = false
-size = Vector3(60, 4, 60)
+size = Vector3(60, 5.67007, 60)
 material = SubResource("ShaderMaterial_slr3f")
 
 [node name="Stage" type="Node3D" parent="."]
@@ -197,7 +163,7 @@ use_collision = true
 collision_layer = 255
 collision_mask = 255
 size = Vector3(50, 9.15448, 50)
-material = SubResource("StandardMaterial3D_r3eg5")
+material = SubResource("ShaderMaterial_iq080")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -21.3619)
@@ -205,7 +171,7 @@ use_collision = true
 collision_layer = 255
 collision_mask = 255
 size = Vector3(50, 1, 20)
-material = SubResource("StandardMaterial3D_tv0qm")
+material = SubResource("ShaderMaterial_iq080")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0919, 0.781789, -19.0569)
@@ -213,23 +179,7 @@ use_collision = true
 collision_layer = 255
 collision_mask = 255
 size = Vector3(20, 1, 20)
-material = SubResource("StandardMaterial3D_tv0qm")
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Stage"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 20.7457)
-use_collision = true
-radius = 3.93173
-height = 5.30911
-sides = 16
-material = SubResource("StandardMaterial3D_x2vwy")
-
-[node name="CyclopsBlocks" type="Node3D" parent="Stage"]
-visible = false
-script = ExtResource("8_ovskq")
-
-[node name="Block_0" type="Node" parent="Stage/CyclopsBlocks"]
-script = ExtResource("9_pdg62")
-block_data = SubResource("Resource_tse7r")
+material = SubResource("ShaderMaterial_4sqvu")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -746,12 +696,12 @@ libraries = {
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9_gxi3i")
 volume_db = -25.0
-autoplay = true
 bus = &"Music"
 
 [node name="Arrow_Holder" type="Node" parent="."]
 
 [node name="SpawnPoints" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 
 [node name="SP_1" type="Node3D" parent="SpawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 13.5669)
@@ -760,7 +710,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 13.5669)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.9343, 0, 0)
 
 [node name="SP_3" type="Node3D" parent="SpawnPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.9264, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 0)
 
 [connection signal="pressed" from="UI/CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Play_Button" to="UI" method="_on_play_button_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/MainMenu/MarginContainer/VBoxContainer/Play_Button" to="UI/CanvasLayer/MainMenu" method="_on_play_button_pressed" flags=18]

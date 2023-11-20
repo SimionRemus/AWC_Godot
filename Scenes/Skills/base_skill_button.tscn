@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://d3bwisxuoxp12" path="res://_Assets/icon.svg" id="1_ysqtg"]
 [ext_resource type="Script" path="res://Scripts/Skills/base_skill_button.gd" id="2_q123v"]
 
-[node name="TextureButton" type="TextureButton"]
+[node name="BaseSkillButton" type="TextureButton"]
 custom_minimum_size = Vector2(64, 64)
 anchors_preset = -1
 anchor_right = 0.033
