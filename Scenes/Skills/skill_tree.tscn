@@ -433,4 +433,3 @@ disabled = false
 [node name="Skill_container" type="Node" parent="."]
 
 [node name="Disguise" parent="Skill_container" instance=ExtResource("16_gccdw")]
-skill_level = 3

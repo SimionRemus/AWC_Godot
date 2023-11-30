@@ -1,8 +1,9 @@
-[gd_scene load_steps=28 format=3 uid="uid://b5bw37phe46ik"]
+[gd_scene load_steps=29 format=3 uid="uid://b5bw37phe46ik"]
 
 [ext_resource type="Script" path="res://Scripts/World.gd" id="1_ux20h"]
 [ext_resource type="Environment" uid="uid://xwxsqngt4cnn" path="res://_Assets/World.tres" id="2_ap2k5"]
-[ext_resource type="Shader" path="res://Shaders/GridShader.gdshader" id="3_rus0d"]
+[ext_resource type="Shader" path="res://Shaders/GlobalScaleShader.gdshader" id="3_puoxg"]
+[ext_resource type="PackedScene" uid="uid://ea8lrdk87m1" path="res://Scenes/Stage_1.tscn" id="4_lb67m"]
 [ext_resource type="Script" path="res://Scripts/FPS_Counter.gd" id="7_xel1g"]
 [ext_resource type="Texture2D" uid="uid://dvqqflruxt06d" path="res://_Assets/Textures/kisspng-reticle.png" id="8_jwean"]
 [ext_resource type="AudioStream" uid="uid://ofc62kl6b3s7" path="res://audio/music/Be Forest - Florence_NOT COMMERCIAL USE.mp3" id="9_gxi3i"]
@@ -60,29 +61,23 @@ noise = SubResource("FastNoiseLite_6oqb3")
 shader = SubResource("Shader_7t750")
 shader_parameter/noise_scale = 0.05
 shader_parameter/flatness = 3.5
-shader_parameter/density = 1.0
+shader_parameter/density = 0.1
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_s5ljw")
 shader_parameter/grad_tex = SubResource("GradientTexture1D_llw0l")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iq080"]
 render_priority = 0
-shader = ExtResource("3_rus0d")
-shader_parameter/scale_0 = 10
-shader_parameter/scale_1 = 1
-shader_parameter/line_scale_0 = 0.01
-shader_parameter/line_scale_1 = 1.0
-shader_parameter/color_0 = Color(1, 1, 1, 1)
-shader_parameter/color_1 = Color(0, 0.160784, 0, 1)
+shader = ExtResource("3_puoxg")
+shader_parameter/primary_tick_color = Color(1, 1, 1, 1)
+shader_parameter/secondary_tick_color = Color(0.454902, 0.184314, 0.215686, 1)
+shader_parameter/ground_color = Color(0, 0.235294, 0, 1)
+shader_parameter/primary_tick_thickness = 0.01
+shader_parameter/secondary_tick_thickness = 0.005
+shader_parameter/primary_tick_increment = 10.0
+shader_parameter/secondary_tick_increment = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4sqvu"]
-render_priority = 0
-shader = ExtResource("3_rus0d")
-shader_parameter/scale_0 = 4
-shader_parameter/scale_1 = 1
-shader_parameter/line_scale_0 = 0.01
-shader_parameter/line_scale_1 = 1.0
-shader_parameter/color_0 = Color(1, 1, 1, 1)
-shader_parameter/color_1 = Color(0, 0.160784, 0, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r7sya"]
+albedo_color = Color(0, 0.188235, 0, 1)
 
 [sub_resource type="Animation" id="Animation_m7grl"]
 resource_name = "MainScreenAnimation"
@@ -150,16 +145,16 @@ shadow_opacity = 0.85
 directional_shadow_mode = 1
 
 [node name="FogVolume" type="FogVolume" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 visible = false
-size = Vector3(60, 5.67007, 60)
+size = Vector3(100, 10, 100)
 material = SubResource("ShaderMaterial_slr3f")
 
 [node name="Stage" type="Node3D" parent="."]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.5, 0)
-use_collision = true
+visible = false
 collision_layer = 255
 collision_mask = 255
 size = Vector3(50, 9.15448, 50)
@@ -167,19 +162,22 @@ material = SubResource("ShaderMaterial_iq080")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -21.3619)
-use_collision = true
+visible = false
 collision_layer = 255
 collision_mask = 255
 size = Vector3(50, 1, 20)
-material = SubResource("ShaderMaterial_iq080")
+material = SubResource("StandardMaterial3D_r7sya")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0919, 0.781789, -19.0569)
-use_collision = true
+visible = false
 collision_layer = 255
 collision_mask = 255
 size = Vector3(20, 1, 20)
-material = SubResource("ShaderMaterial_4sqvu")
+material = SubResource("StandardMaterial3D_r7sya")
+
+[node name="Stage2" parent="." instance=ExtResource("4_lb67m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -701,7 +699,7 @@ bus = &"Music"
 [node name="Arrow_Holder" type="Node" parent="."]
 
 [node name="SpawnPoints" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
 
 [node name="SP_1" type="Node3D" parent="SpawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 13.5669)
