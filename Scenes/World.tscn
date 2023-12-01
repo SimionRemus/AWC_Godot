@@ -61,7 +61,7 @@ noise = SubResource("FastNoiseLite_6oqb3")
 shader = SubResource("Shader_7t750")
 shader_parameter/noise_scale = 0.05
 shader_parameter/flatness = 3.5
-shader_parameter/density = 0.1
+shader_parameter/density = 0.05
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_s5ljw")
 shader_parameter/grad_tex = SubResource("GradientTexture1D_llw0l")
 
@@ -146,8 +146,7 @@ directional_shadow_mode = 1
 
 [node name="FogVolume" type="FogVolume" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
-visible = false
-size = Vector3(100, 10, 100)
+size = Vector3(120, 10, 120)
 material = SubResource("ShaderMaterial_slr3f")
 
 [node name="Stage" type="Node3D" parent="."]
